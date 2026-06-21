@@ -2,27 +2,41 @@
 
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import { LuLayoutDashboard, LuLogOut, LuSun, LuMoon, LuShieldCheck } from "react-icons/lu";
+import { LuLayoutDashboard, LuLogOut, LuSun, LuMoon } from "react-icons/lu";
 import { useTheme } from "./ThemeProvider";
+import { useSession, signOut } from "@/lib/auth-client";
+import { Button } from "@heroui/react";
+import { useRouter } from "next/navigation";
 
 const Navbar = () => {
   const [mounted, setMounted] = useState(false);
   const { resolvedTheme, setTheme } = useTheme();
+  const { data: session } = useSession();
+  const router = useRouter();
+  const user = session?.user;
 
   useEffect(() => {
-    //setMounted(true);
+    setMounted(true);
   }, []);
-  
+
+  const handleSignOut = async () => {
+    await signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          router.push("/auth/signin");
+        },
+      },
+    });
+  };
+ 
   const navLinks = [
     { name: "Home", href: "/" },
     { name: "Browse Recipes", href: "/browse" },
     { name: "Dashboard", href: "/dashboard" },
-    { name: "Admin Panel", href: "/admin" }, // Added Admin Panel
+    { name: "Admin Panel", href: "/admin" },
   ];
 
-  // Prevent hydration mismatch
-  /* useEffect(() => setMounted(true), []);
-  if (!mounted) return null; */
+  if (!mounted) return null;
 
   return (
     <nav className="sticky top-0 z-50 w-full bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800">
@@ -52,33 +66,26 @@ const Navbar = () => {
             onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
             className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-300 transition-all"
           >
-            {mounted ? (
-              resolvedTheme === "dark" ? <LuSun size={20} /> : <LuMoon size={20} />
-            ) : (
-              <LuMoon size={20} />
-            )}
+            {resolvedTheme === "dark" ? <LuSun size={20} /> : <LuMoon size={20} />}
           </button>
 
-          <div className="relative group">
-            <button className="flex items-center gap-3 pl-2 pr-4 py-1.5 bg-green-600 text-white rounded-full hover:bg-green-700 transition-all">
-              <div className="w-8 h-8 bg-white/20 rounded-full" />
-              <span className="font-medium">Abc</span>
-            </button>
-            
-            {/* Dropdown Menu */}
-            <div className="absolute right-0 top-full mt-2 w-48 py-2 bg-white dark:bg-gray-900 shadow-xl rounded-xl border border-gray-100 dark:border-gray-800 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-              <Link 
-                href="/dashboard" 
-                className="flex items-center gap-3 px-4 py-2.5 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+          {/* Auth Links */}
+          <div className="flex items-center gap-4">
+            {user ? (
+              <>
+                <span className="text-sm">Hi, {user.name}!</span>
+                <Button onClick={handleSignOut} variant="ghost" className="text-green-600 hover:text-green-700">
+                  Sign Out
+                </Button>
+              </>
+            ) : (
+              <Link
+                href="/auth/signin"
+                className="text-sm font-medium text-green-600 transition hover:text-green-700"
               >
-                <LuLayoutDashboard size={18} /> Dashboard
+                Sign In
               </Link>
-              <button 
-                className="flex items-center gap-3 w-full px-4 py-2.5 text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors"
-              >
-                <LuLogOut size={18} /> Logout
-              </button>
-            </div>
+            )}
           </div>
         </div>
       </div>

@@ -2,16 +2,31 @@
 import React, { use, useEffect, useState } from 'react';
 import { LuHeart, LuFlag, LuShoppingBag, LuBookmark, LuCheck } from 'react-icons/lu';
 import Link from 'next/link';
+import { 
+  Modal, 
+  ModalHeader, 
+  ModalBody, 
+  ModalFooter, 
+  RadioGroup, 
+  Radio, 
+  Button 
+} from "@heroui/react";
 
 export default function RecipeDetailsPage({ params }) {
   // Unwrap the params promise using React.use()
   const resolvedParams = use(params);
   const { id } = resolvedParams;
 
-  const [recipe, setRecipe] = useState(null);
+  // Custom disclosure hook to avoid library export errors
+  const [isOpen, setIsOpen] = useState(false);
+  const onOpen = () => setIsOpen(true);
+  const onClose = () => setIsOpen(false);
 
+  const [recipe, setRecipe] = useState(null);
+  const [likes, setLikes] = useState(119);
+  const [isFavorite, setIsFavorite] = useState(false);
+  
   useEffect(() => {
-    // This simulates fetching data for the specific ID
     setRecipe({
       id: id,
       title: `Recipe Title ${id}`, 
@@ -69,9 +84,9 @@ export default function RecipeDetailsPage({ params }) {
         <div className="space-y-4 mb-12">
           {recipe.ingredients.map((item, index) => (
             <div key={index} className="flex items-center gap-3 text-gray-700">
-           <LuCheck className="text-green-600" />
-           {item}
-</div>
+             <LuCheck className="text-green-600" />
+             {item}
+            </div>
           ))}
         </div>
 
@@ -80,25 +95,38 @@ export default function RecipeDetailsPage({ params }) {
           <h3 className="text-sm font-bold text-black uppercase tracking-widest mb-6">Actions</h3>
           
           <div className="space-y-3">
-            <button className="w-full flex items-center justify-center gap-2 py-3 border text-black border-gray-200 rounded-lg hover:bg-gray-50 transition">
-              <LuHeart /> Like (119)
+            <button 
+              onClick={() => setLikes(likes + 1)}
+              className="w-full flex items-center justify-center gap-2 py-3 border text-black border-gray-200 rounded-lg hover:bg-gray-50 transition"
+            >
+              <LuHeart /> Like ({likes})
             </button>
             
-            <button className="w-full flex items-center justify-center gap-2 py-3 text-black border border-gray-200 rounded-lg hover:bg-gray-50 transition">
-              <LuBookmark /> Save to Favorites
+            <button 
+              onClick={() => setIsFavorite(!isFavorite)}
+              className={`w-full flex items-center justify-center gap-2 py-3 border rounded-lg transition ${
+                isFavorite ? "bg-green-50 border-green-200 text-green-700" : "text-black border-gray-200 hover:bg-gray-50"
+              }`}
+            >
+              <LuBookmark className={isFavorite ? "fill-green-600" : ""} /> 
+              {isFavorite ? "Favorited" : "Save to Favorites"}
             </button>
             
-            <button className="w-full flex items-center justify-center gap-2 py-3 bg-gray-900 text-white rounded-lg hover:bg-black transition font-semibold">
+            <button className="w-full flex items-center justify-center gap-2 py-3 bg-green-900 text-white rounded-lg hover:bg-black transition font-semibold">
               <LuShoppingBag /> Purchase Details
             </button>
             
-            <button className="w-full flex items-center justify-center gap-2 py-3 text-black hover:text-red-600 transition text-sm">
-              <LuFlag size={16} /> Report Issue
-            </button>
+            <Link 
+            href={`/recipe/${id}/report`}
+              className="w-full flex items-center justify-center gap-2 py-3 text-black hover:text-red-600 transition text-sm"
+>
+           <LuFlag size={16} /> Report Issue
+        </Link>
           </div>
         </div>
-
       </div>
+
+    
     </main>
   );
 }
