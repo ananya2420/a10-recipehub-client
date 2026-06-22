@@ -31,7 +31,7 @@ const Navbar = () => {
  
   const navLinks = [
     { name: "Home", href: "/" },
-    { name: "Browse Recipes", href: "/browse" },
+    { name: "Browse Recips", href: "/recips" },
     { name: "Dashboard", href: "/dashboard" },
     { name: "Admin Panel", href: "/admin" },
   ];
