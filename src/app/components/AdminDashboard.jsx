@@ -1,45 +1,31 @@
 import React from 'react';
+import Link from 'next/link';
 import { LayoutDashboard, Users, BookOpen, AlertTriangle, Receipt } from 'lucide-react';
 
 const styles = {
-  container: "flex min-h-screen bg-gray-50",
-  sidebar: "w-64 border-r border-gray-200 bg-white min-h-screen p-6",
-  sidebarHeading: "font-bold text-xl mb-8 flex items-center gap-2 text-green-700",
-  navLink: "flex items-center gap-3 text-gray-600 hover:text-green-600 font-medium transition-colors py-2",
-  mainContent: "flex-1 p-8",
-  headerTitle: "text-3xl font-bold flex items-center gap-2 text-gray-900",
-  headerSubtitle: "text-gray-500 mt-1",
-  statsGrid: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8",
-  card: "bg-white p-6 rounded-xl border border-green-100 shadow-sm text-center hover:border-green-200 transition-all",
-  cardValue: "text-3xl font-bold text-green-600 mt-2",
-  cardLabel: "text-gray-500 font-medium text-sm mt-1",
-  quickActionsContainer: "bg-white p-6 rounded-xl border border-green-100 shadow-sm mt-8",
-  actionButton: "px-4 py-2 border border-gray-200 rounded-lg text-green-700 hover:bg-green-50 hover:border-green-300 font-medium text-sm transition-all"
+  container: 'flex min-h-screen bg-gray-50',
+  sidebar: 'w-72 border-r border-gray-200 bg-white p-6',
+  sidebarHeading: 'text-xl font-bold mb-6 text-green-700',
+  navLink: 'flex items-center gap-3 rounded-lg px-4 py-3 text-gray-700 hover:bg-green-50 transition-all',
+  navText: 'font-medium',
+  mainContent: 'flex-1 p-8',
+  headerTitle: 'text-3xl font-bold text-gray-900',
+  headerSubtitle: 'text-gray-500 mt-1',
+  statsGrid: 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8',
+  card: 'bg-white p-6 rounded-xl border border-green-100 shadow-sm text-center hover:border-green-200 transition-all',
+  cardValue: 'text-3xl font-bold text-green-600 mt-2',
+  cardLabel: 'text-gray-500 font-medium text-sm mt-1',
+  quickActionsContainer: 'bg-white p-6 rounded-xl border border-green-100 shadow-sm mt-8',
+  actionButton: 'px-4 py-2 border border-gray-200 rounded-lg text-green-700 hover:bg-green-50 hover:border-green-300 font-medium text-sm transition-all'
 };
 
-const Sidebar = () => {
-  const menuItems = [
-    { name: 'Overview', icon: LayoutDashboard },
-    { name: 'Manage Users', icon: Users },
-    { name: 'Manage Recipes', icon: BookOpen },
-    { name: 'Reports', icon: AlertTriangle },
-    { name: 'Transactions', icon: Receipt },
-  ];
-
-  return (
-    <aside className={styles.sidebar}>
-      <div className={styles.sidebarHeading}>🛡️ Admin Panel</div>
-      <nav className="space-y-4">
-        {menuItems.map((item) => (
-          <a key={item.name} href="#" className={styles.navLink}>
-            <item.icon className="w-5 h-5" /> 
-            {item.name}
-          </a>
-        ))}
-      </nav>
-    </aside>
-  );
-};
+const menuItems = [
+  { name: 'Overview', icon: LayoutDashboard, href: '/admin' },
+  { name: 'Manage Users', icon: Users, href: '/admin/users' },
+  { name: 'Manage Recipes', icon: BookOpen, href: '/admin/recipes' },
+  { name: 'Reports', icon: AlertTriangle, href: '/admin/reports' },
+  { name: 'Transactions', icon: Receipt, href: '/admin/transactions' }
+];
 
 const StatCard = ({ title, count, emoji }) => (
   <div className={styles.card}>
@@ -65,7 +51,17 @@ const QuickActions = () => (
 export default function AdminDashboard() {
   return (
     <div className={styles.container}>
-      <Sidebar />
+      <aside className={styles.sidebar}>
+        <div className={styles.sidebarHeading}>Admin Menu</div>
+        <nav className="space-y-2">
+          {menuItems.map((item) => (
+            <Link key={item.name} href={item.href} className={styles.navLink}>
+              <item.icon className="w-5 h-5 text-green-600" />
+              <span className={styles.navText}>{item.name}</span>
+            </Link>
+          ))}
+        </nav>
+      </aside>
       <main className={styles.mainContent}>
         <header>
           <h2 className={styles.headerTitle}>Admin Overview 🛡️</h2>

@@ -45,8 +45,8 @@ export default function Sidebar({ user }) {
     { name: "My Recipes", icon: LuList, path: "/dashboard/recipes" },
     { name: "Favorites", icon: LuBookmark, path: "/dashboard/favorites" },
     { name: "Purchased", icon: LuShoppingBag, path: "/dashboard/purchased" },
-    // UPDATE THIS LINE BELOW
-    { name: "Profile", icon: LuUser, path: "/dashboard/premium" } 
+    { name: "Profile", icon: LuUser, path: "/dashboard/premium" },
+    { name: "Admin Panel", icon: LuLayoutDashboard, path: "/admin" }
   ].map((item) => (
     <Link
       key={item.name}
