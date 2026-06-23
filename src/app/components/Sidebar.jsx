@@ -2,7 +2,7 @@
 
 import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
-import { LuLayoutDashboard, LuPlus, LuList, LuBookmark, LuShoppingBag, LuLogOut, LuSun, LuMoon } from "react-icons/lu";
+import { LuLayoutDashboard, LuPlus, LuList, LuBookmark, LuShoppingBag, LuLogOut, LuSun, LuMoon, LuUser } from "react-icons/lu";
 import Link from "next/link";
 import { Button } from "@heroui/react";
 
@@ -45,6 +45,7 @@ export default function Sidebar({ user }) {
             { name: "My Recipes", icon: LuList, path: "/dashboard/recipes" },
             { name: "Favorites", icon: LuBookmark, path: "/dashboard/favorites" },
             { name: "Purchased", icon: LuShoppingBag, path: "/dashboard/purchased" },
+            { name: "Profile", icon: LuUser, path: "/dashboard/profile" }
           ].map((item) => (
             <Link
               key={item.name}

@@ -1,12 +1,9 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-
-//import { ThemeProvider } from "./components/ThemeProvider"; // Point to your new file
-
 import { ThemeProvider } from "./components/ThemeProvider";
+import { RecipeProvider } from "@/app/context/RecipeContext"; // 1. Import your provider
 import Footer from "./pages/home/Footer";
 import Navbar from "./components/Navbar";
-
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,12 +23,15 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="min-h-full flex flex-col">
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <Navbar />
-          {children}
-          <Footer />
-        </ThemeProvider>
+      <body className={`${geistSans.variable} ${geistMono.variable} min-h-full flex flex-col`}>
+        {/* 2. Wrap the application with RecipeProvider */}
+        <RecipeProvider>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <Navbar />
+            <main className="flex-grow">{children}</main>
+            <Footer />
+          </ThemeProvider>
+        </RecipeProvider>
       </body>
     </html>
   );
