@@ -3,6 +3,8 @@
 import { useSearchParams } from "next/navigation";
 import DashboardOverview from "@/app/components/DashboardOverview";
 import AddRecipeForm from "@/app/components/AddRecipeForm";
+import PurchasedRecipesPage from "./purchased/page";
+//import PurchasedRecipesPage from "@/app/dashboard/purchased/page"; // Import your new page
 
 export default function Page() {
   const searchParams = useSearchParams();
@@ -10,7 +12,13 @@ export default function Page() {
 
   return (
     <div className="p-8">
-      {view === "new" ? <AddRecipeForm /> : <DashboardOverview />}
+      {view === "new" ? (
+        <AddRecipeForm />
+      ) : view === "purchased" ? (
+        <PurchasedRecipesPage />
+      ) : (
+        <DashboardOverview />
+      )}
     </div>
   );
 }

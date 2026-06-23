@@ -53,7 +53,7 @@ const RecipeDetailsPage = async ({ params }) => {
           </div>
           
           {/* Client-side actions (Includes the Purchase Details form) */}
-          <RecipeActions 
+          <RecipeActions
             id={recipe._id} 
             price={recipe.price} 
             title={recipe.title} 

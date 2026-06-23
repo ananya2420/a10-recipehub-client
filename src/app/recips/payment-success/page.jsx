@@ -1,6 +1,7 @@
 import { stripe } from '@/lib/stripe';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
+import PurchaseSaver from '@/app/components/PurchaseSaver';
 
 export default async function Success({ searchParams }) {
   const { session_id } = await searchParams;
@@ -14,18 +15,19 @@ export default async function Success({ searchParams }) {
   if (session.status === 'open') return redirect('/');
 
   if (session.status === 'complete') {
+    // FIX: Serialize the session object into a plain object
+    const plainSession = JSON.parse(JSON.stringify(session));
+
     return (
       <main className="min-h-screen flex items-center justify-center bg-gray-50 p-6">
+        {/* Pass the plain object instead of the raw Stripe object */}
+        <PurchaseSaver session={plainSession} />
+        
         <div className="bg-white p-10 rounded-3xl shadow-sm border border-gray-100 text-center max-w-md w-full">
-          {/* Success Icon */}
           <div className="text-5xl mb-4">✅</div>
-          
           <h2 className="text-3xl font-bold text-gray-900 mb-2">Payment Successful! 🎉</h2>
-          <p className="text-gray-500 mb-8">
-            Your recipe has been unlocked! You can now access the full recipe details.
-          </p>
+          <p className="text-gray-500 mb-8">Your recipe has been unlocked!</p>
 
-          {/* Status Card */}
           <div className="bg-gray-50 p-4 rounded-xl text-left mb-8 border border-gray-100">
             <div className="flex justify-between py-2 border-b border-gray-200">
               <span className="text-gray-500">Payment Type</span>
@@ -41,7 +43,6 @@ export default async function Success({ searchParams }) {
             </div>
           </div>
 
-          {/* Action Buttons */}
           <div className="grid grid-cols-2 gap-4">
             <Link href="/dashboard" className="py-3 bg-black text-white rounded-xl font-bold hover:bg-gray-800 transition">
               Go to Dashboard →
