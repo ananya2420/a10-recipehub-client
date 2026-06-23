@@ -74,7 +74,7 @@ const Navbar = () => {
             {user ? (
               <>
                 <span className="text-sm">Hi, {user.name}!</span>
-                <Button onClick={handleSignOut} variant="ghost" className="text-green-600 hover:text-green-700">
+                <Button onClick={handleSignOut} variant="ghost" className="text-red-600 hover:text-red-700">
                   Sign Out
                 </Button>
               </>
