@@ -37,25 +37,26 @@ export default function Sidebar({ user }) {
           </button>
         </div>
 
-        {/* Navigation */}
-        <nav className="space-y-4">
-          {[
-            { name: "Overview", icon: LuLayoutDashboard, path: "/dashboard" },
-            { name: "Add Recipe", icon: LuPlus, path: "/dashboard/new" },
-            { name: "My Recipes", icon: LuList, path: "/dashboard/recipes" },
-            { name: "Favorites", icon: LuBookmark, path: "/dashboard/favorites" },
-            { name: "Purchased", icon: LuShoppingBag, path: "/dashboard/purchased" },
-            { name: "Profile", icon: LuUser, path: "/dashboard/profile" }
-          ].map((item) => (
-            <Link
-              key={item.name}
-              href={item.path}
-              className="flex items-center gap-3 text-gray-600 transition-colors hover:text-green-600 dark:text-gray-400 dark:hover:text-green-500"
-            >
-              <item.icon size={20} /> {item.name}
-            </Link>
-          ))}
-
+       {/* Navigation */}
+<nav className="space-y-4">
+  {[
+    { name: "Overview", icon: LuLayoutDashboard, path: "/dashboard" },
+    { name: "Add Recipe", icon: LuPlus, path: "/dashboard/new" },
+    { name: "My Recipes", icon: LuList, path: "/dashboard/recipes" },
+    { name: "Favorites", icon: LuBookmark, path: "/dashboard/favorites" },
+    { name: "Purchased", icon: LuShoppingBag, path: "/dashboard/purchased" },
+    // UPDATE THIS LINE BELOW
+    { name: "Profile", icon: LuUser, path: "/dashboard/premium" } 
+  ].map((item) => (
+    <Link
+      key={item.name}
+      href={item.path}
+      className="flex items-center gap-3 text-gray-600 transition-colors hover:text-green-600 dark:text-gray-400 dark:hover:text-green-500"
+    >
+      <item.icon size={20} /> {item.name}
+    </Link>
+  ))}
+  
           {/* Auth Section */}
           <div className="pt-4">
             {user ? (

@@ -26,6 +26,10 @@ export const auth = betterAuth({
     additionalFields:{
         role:{
             default:"seeker"
+        },
+        isPremium: {
+          type: "boolean",
+          default: false,
         }
     }
   }
