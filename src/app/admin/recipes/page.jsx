@@ -1,4 +1,5 @@
 ﻿"use client";
+import { authClient } from "@/lib/auth-client";
 import React, { useEffect, useState } from "react";
 
 /**
@@ -40,6 +41,10 @@ export default function ManageRecipes() {
   const [error, setError] = useState(null);
   const [featuredIds, setFeaturedIds] = useState(() => (typeof window !== "undefined" ? loadIds(LOCAL_FEATURED_KEY) : []));
   const [deletedIds, setDeletedIds] = useState(() => (typeof window !== "undefined" ? loadIds(LOCAL_DELETED_KEY) : []));
+
+
+ 
+
 
   useEffect(() => {
     async function fetchRecipes() {
