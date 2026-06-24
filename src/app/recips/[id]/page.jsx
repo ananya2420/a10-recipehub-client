@@ -2,12 +2,24 @@ import Image from "next/image";
 import Link from "next/link";
 import { getRecipeById } from "@/lib/api/recipe";
 import RecipeActions from "@/app/components/RecipeActions";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 
 const RecipeDetailsPage = async ({ params }) => {
   const { id } = await params;
-  const recipe = await getRecipeById(id);
+  
+  // Retrieve token
+  const result = await auth.api.getToken({ headers: await headers() });
+  
+  // Extract token string correctly
+  // If result is { token: "..." }, token becomes result.token
+  const token = typeof result === 'string' ? result : result?.token;
+  //console.log(token);
 
-  return(
+  // Pass token to API
+  const recipe = await getRecipeById(id, token);
+
+  return (
     <div className="container mx-auto px-4 py-8">
       <Link href="/recips" className="inline-flex items-center text-green-700 hover:text-green-900 mb-6 font-medium">
         Back to Recipes
@@ -42,7 +54,6 @@ const RecipeDetailsPage = async ({ params }) => {
                   </div>
                 </div>
 
-                {/* Single Add to Cart Button (Kept separate from payment form) */}
                 <div className="mt-8">
                   <button className="w-full bg-green-600 text-white py-3.5 rounded-xl font-bold hover:bg-green-700 transition duration-200 shadow-md">
                     Add to Cart
@@ -52,7 +63,6 @@ const RecipeDetailsPage = async ({ params }) => {
             </div>
           </div>
           
-          {/* Client-side actions (Includes the Purchase Details form) */}
           <RecipeActions
             id={recipe._id} 
             price={recipe.price} 

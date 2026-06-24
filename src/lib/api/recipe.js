@@ -1,5 +1,14 @@
 const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL;
 
+// Helper to get headers with Authorization
+const getHeaders = (token) => {
+    const headers = { 'Content-Type': 'application/json' };
+    if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+    }
+    return headers;
+};
+
 export const getAllRecips = async (search = "", category = "") => {
     if (!baseUrl) throw new Error("NEXT_PUBLIC_SERVER_URL is not defined");
 
@@ -18,15 +27,23 @@ export const getAllRecips = async (search = "", category = "") => {
 };
 
 
-export const getRecipeById = async (id) => {
+// Add the token parameter here
+export const getRecipeById = async (id, token = null) => {
     if (!baseUrl) throw new Error("NEXT_PUBLIC_SERVER_URL is not defined");
 
-    // Must match the "/recipe/:id" defined in your Express server
-    const res = await fetch(`${baseUrl}/recipe/${id}`, { cache: 'no-store' });
+    const res = await fetch(`${baseUrl}/recipe/${id}`, { 
+        cache: 'no-store',
+        // Add the headers object
+        headers: {
+            'Content-Type': 'application/json',
+            ...(token && { 'Authorization': `Bearer ${token}` })
+        }
+    });
     
     if (!res.ok) return null;
     return await res.json();
 };
+
 
 export const updateRecipe = async (id, data) => {
     if (!baseUrl) throw new Error("NEXT_PUBLIC_SERVER_URL is not defined");
