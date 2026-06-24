@@ -27,3 +27,20 @@ export const getRecipeById = async (id) => {
     if (!res.ok) return null;
     return await res.json();
 };
+
+export const updateRecipe = async (id, data) => {
+    if (!baseUrl) throw new Error("NEXT_PUBLIC_SERVER_URL is not defined");
+
+    const res = await fetch(`${baseUrl}/recipe/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+        cache: 'no-store',
+    });
+
+    if (!res.ok) {
+        throw new Error('Failed to update recipe');
+    }
+
+    return await res.json();
+};

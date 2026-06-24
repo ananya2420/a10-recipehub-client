@@ -1,5 +1,7 @@
+"use client";
 import React from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { LayoutDashboard, Users, BookOpen, AlertTriangle, Receipt } from 'lucide-react';
 
 const styles = {
@@ -7,6 +9,7 @@ const styles = {
   sidebar: 'w-72 border-r border-gray-200 bg-white p-6',
   sidebarHeading: 'text-xl font-bold mb-6 text-green-700',
   navLink: 'flex items-center gap-3 rounded-lg px-4 py-3 text-gray-700 hover:bg-green-50 transition-all',
+  navLinkActive: 'flex items-center gap-3 rounded-lg px-4 py-3 text-green-900 bg-green-50 border border-green-200 transition-all',
   navText: 'font-medium',
   mainContent: 'flex-1 p-8',
   headerTitle: 'text-3xl font-bold text-gray-900',
@@ -49,17 +52,26 @@ const QuickActions = () => (
 );
 
 export default function AdminDashboard() {
+  const pathname = usePathname();
+
   return (
     <div className={styles.container}>
       <aside className={styles.sidebar}>
         <div className={styles.sidebarHeading}>Admin Menu</div>
         <nav className="space-y-2">
-          {menuItems.map((item) => (
-            <Link key={item.name} href={item.href} className={styles.navLink}>
-              <item.icon className="w-5 h-5 text-green-600" />
-              <span className={styles.navText}>{item.name}</span>
-            </Link>
-          ))}
+          {menuItems.map((item) => {
+            const isActive = pathname === item.href;
+            return (
+              <Link
+                key={item.name}
+                href={item.href}
+                className={isActive ? styles.navLinkActive : styles.navLink}
+              >
+                <item.icon className="w-5 h-5 text-green-600" />
+                <span className={styles.navText}>{item.name}</span>
+              </Link>
+            );
+          })}
         </nav>
       </aside>
       <main className={styles.mainContent}>
