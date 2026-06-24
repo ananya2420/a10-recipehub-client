@@ -7,7 +7,7 @@ const RecipeDetailsPage = async ({ params }) => {
   const { id } = await params;
   const recipe = await getRecipeById(id);
 
-  return (
+  return(
     <div className="container mx-auto px-4 py-8">
       <Link href="/recips" className="inline-flex items-center text-green-700 hover:text-green-900 mb-6 font-medium">
         Back to Recipes
