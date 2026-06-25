@@ -9,19 +9,36 @@ const getHeaders = (token) => {
     return headers;
 };
 
-export const getAllRecips = async (search = "", category = "") => {
+
+export const getAllRecips = async (search = "", category = "", queryString = "") => {
     if (!baseUrl) throw new Error("NEXT_PUBLIC_SERVER_URL is not defined");
 
+    // If queryString is provided, use it directly
+    if (queryString) {
+        const query = queryString.startsWith('?') ? queryString : `?${queryString}`;
+        const res = await fetch(`${baseUrl}/recips${query}`, { cache: 'no-store' });
+        
+        if (!res.ok) throw new Error(`Failed to fetch data: ${res.status} ${res.statusText}`);
+        return await res.json();
+    }
+
+    // Default logic: Ensure params include search, category, AND potential pagination
     const params = new URLSearchParams();
     if (search) params.append('search', search);
     if (category) params.append('category', category);
-
-    // Use params.toString() to correctly build ?search=x&category=y
+    
+    // If you need to support pagination here as well, 
+    // you should pass 'page' and 'perPage' as arguments to getAllRecips
+    
     const url = `${baseUrl}/recips?${params.toString()}`;
 
     const res = await fetch(url, { cache: 'no-store' });
     
-    if (!res.ok) throw new Error("Failed to fetch data");
+    // Improved error reporting to help debug the specific cause
+    if (!res.ok) {
+        const errorData = await res.text();
+        throw new Error(`Failed to fetch data: ${res.status} - ${errorData}`);
+    }
     
     return await res.json();
 };

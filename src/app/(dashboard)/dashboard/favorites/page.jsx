@@ -16,7 +16,8 @@ export default function FavoritesPage() {
         setFavoriteIds(saved);
         
         // Fetch all recipes from API
-        const allRecipes = await getAllRecips();
+        const response = await getAllRecips();
+        const allRecipes = response.data || response || [];
         setRecipes(allRecipes);
       } catch (error) {
         console.error("Error loading favorites:", error);
@@ -93,7 +94,7 @@ export default function FavoritesPage() {
     localStorage.setItem("favorites", JSON.stringify(updated));
     window.dispatchEvent(new Event("favoritesChanged"));
   }}
-  className="flex-1 block px-6 py-3 bg-red-600 text-black border  rounded-lg font-bold hover:bg-red-700 transition-colors shadow-sm"
+  className="flex-1 block px-6 py-3 bg-red-600 text-white rounded-lg font-bold hover:bg-red-700 transition-colors shadow-sm"
 >
   Remove
 </button>

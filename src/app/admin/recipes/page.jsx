@@ -54,7 +54,8 @@ export default function ManageRecipes() {
         if (!res.ok) throw new Error(`Failed to fetch: ${res.status}`);
 
         const data = await res.json();
-        const filtered = data
+        const recipesArray = data.data || data || [];
+        const filtered = recipesArray
           .filter((r) => !deletedIds.includes(r._id))
           .map((r) => ({ ...r, featured: featuredIds.includes(r._id) ? true : !!r.featured }));
 
