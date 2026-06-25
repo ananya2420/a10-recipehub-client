@@ -9,15 +9,15 @@ const RecipeDetailsPage = async ({ params }) => {
   const { id } = await params;
   
   // Retrieve token
-  const result = await auth.api.getToken({ headers: await headers() });
+  //const result = await auth.api.getToken({ headers: await headers() });
   
   // Extract token string correctly
   // If result is { token: "..." }, token becomes result.token
-  const token = typeof result === 'string' ? result : result?.token;
+  //const token = typeof result === 'string' ? result : result?.token;
   //console.log(token);
 
   // Pass token to API
-  const recipe = await getRecipeById(id, token);
+  const recipe = await getRecipeById(id);
 
   return (
     <div className="container mx-auto px-4 py-8">

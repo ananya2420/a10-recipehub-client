@@ -53,7 +53,7 @@ export const getRecipeById = async (id, token = null) => {
         // Add the headers object
         headers: {
             'Content-Type': 'application/json',
-            ...(token && { 'Authorization': `Bearer ${token}` })
+         
         }
     });
     
